@@ -48,6 +48,7 @@ const cn = {
     'Delete selected': '删除所选',
     'Update selected': '更新所选',
     'Delete success': '删除成功',
+    'Delete failed': '删除失败',
     'Search': '搜索',
     'Source': '来源',
     'Status': '状态',
@@ -71,7 +72,8 @@ const cn = {
     'Create success': '创建成功',
     'Update success': '更新成功',
     'Deactive selected': '禁用所选',
-    'Active selected': '激活所选'
+    'Active selected': '激活所选',
+    'rows': '行'
   },
   route: {
     'dashboard': '仪表盘',
@@ -93,10 +95,13 @@ const cn = {
     'Perms': '权限管理',
     'AssetPermission': '资产授权',
     'AssetPermissionCreate': '创建资产授权规则',
+    'AssetPermissionUpdate': '更新资产授权规则',
     'RemoteAppPermission': '远程应用授权',
     'RemoteAppPermissionCreate': '创建远程应用授权规则',
+    'RemoteAppPermissionUpdate': '更新远程应用授权规则',
     'DatabaseAppPermission': '数据库应用授权',
     'DatabaseAppPermissionCreate': '创建数据库应用授权规则',
+    'DatabaseAppPermissionUpdate': '更新数据库应用授权规则',
     'Sessions': '会话管理',
     'SessionOnline': '在线会话',
     'SessionOffline': '历史会话',
@@ -348,10 +353,30 @@ const cn = {
     'UserGroups': '用户组',
     'Node': '节点',
     'SystemUser': '系统用户',
+    'UserCount': '用户数量',
+    'UserGroupCount': '用户组数量',
+    'AssetCount': '资产数量',
+    'NodeCount': '节点数量',
+    'SystemUserCount': '系统用户数量',
+    'DateStart': '开始日期',
+    'DateExpired': '失效日期',
+    'DateCreated': '创建日期',
+    'CreatedBy': '创建者',
+    'Comment': '备注',
+    'QuickModify': '快速修改',
+    'AssetPermissionDetail': '资产授权详情',
+    'UsersAndUserGroups': '用户或用户组',
+    'AssetAndNode': '资产或节点',
+    'Active': '激活中',
     //
     'RemoteApp': '远程应用',
+    'RemoteAppCount': '远程应用数量',
+    'RemoteAppPermissionDetail': '远程应用授权详情',
+    'Add RemoteApp to this permission': '添加远程应用',
     //
-    'DatabaseApp': '数据库应用'
+    'DatabaseApp': '数据库应用',
+    'DatabaseAppPermissionDetail': '数据库应用授权详情',
+    'Add DatabaseApp to this permission': '添加数据库应用'
   },
   sessions: {
     'id': 'ID',
@@ -400,6 +425,11 @@ const cn = {
     'date': '日期',
     'MyTickets': '我的工单',
     'AssignedMe': '待处理'
+  },
+  tree: {
+    'AddNode': '添加资产到节点',
+    'RenameNode': '重命名节点',
+    'DeleteNode': '删除节点'
   },
   setting: {
     'setting': '系统设置',
