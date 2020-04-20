@@ -29,9 +29,7 @@ export default {
       defaultSetting: {
         async: {
           enable: true,
-          url: this.treeSetting.showAssets
-            ? `${process.env.VUE_APP_BASE_API}${this.setting.treeUrl}`
-            : `${process.env.VUE_APP_BASE_API}${this.setUrlParam(this.setting.treeUrl, 'assets', '0')}`,
+          url: `${process.env.VUE_APP_BASE_API}${this.setting.treeUrl}`,
           autoParam: ['id=key', 'name=n', 'level=lv'],
           type: 'get'
         },
@@ -101,9 +99,12 @@ export default {
       if (this.rMenu) this.rMenu.css({ 'visibility': 'hidden' })
       $('body').unbind('mousedown', this.onBodyMouseDown)
     },
+    // Request URL: http://localhost/api/v1/assets/assets/?node_id=d8212328-538d-41a6-bcfd-1e8cc7e3aed4&show_current_asset=null&draw=2&limit=15&offset=0&_=1587022917769
+
     onSelected: function(event, treeNode) {
       this.current_node = treeNode
       this.current_node_id = treeNode.meta.node.id
+      this.$emit('urlChange', `${this.setting.url}?node_id=${treeNode.meta.node.id}&show_current_asset=null`)
     },
     removeTreeNode: function() {
       this.hideRMenu()
@@ -175,6 +176,7 @@ export default {
     onDrop: function(event, treeId, treeNodes, targetNode, moveType) {
       var treeNodesIds = []
       $.each(treeNodes, function(index, value) {
+        console.log(value)
         treeNodesIds.push(value.meta.node.id)
       })
       var the_url = `${this.treeSetting.nodeUrl}${targetNode.meta.node.id}/children/add/`
@@ -187,7 +189,29 @@ export default {
       })
     },
     addTreeNode: function() {
-      alert('添加资产到节点')
+      this.hideRMenu()
+      var parentNode = this.zTree.getSelectedNodes()[0]
+      if (!parentNode) {
+        return
+      }
+      // http://localhost/api/v1/assets/nodes/85aa4ee2-0bd9-41db-9079-aa3646448d0c/children/
+      var url = `${this.treeSetting.nodeUrl}${parentNode.meta.node.id}/children/`
+      this.$axios.post(
+        url, {}
+      ).then(data => {
+        var newNode = {
+          id: data['key'],
+          name: data['value'],
+          pId: parentNode.id,
+          meta: {
+            'node': data
+          }
+        }
+        newNode.checked = this.zTree.getSelectedNodes()[0].checked
+        this.zTree.addNodes(parentNode, 0, newNode)
+        var node = this.zTree.getNodeByParam('id', newNode.id, parentNode)
+        this.zTree.editName(node)
+      })
     }
   }
 }
