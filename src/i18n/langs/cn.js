@@ -73,7 +73,9 @@ const cn = {
     'Update success': '更新成功',
     'Deactive selected': '禁用所选',
     'Active selected': '激活所选',
-    'rows': '行'
+    'rows': '行',
+    'Basic Info': '基本信息',
+    'Add': '添加'
   },
   route: {
     'dashboard': '仪表盘',
@@ -123,7 +125,12 @@ const cn = {
     'Settings': '系统设置',
     'UserCreate': '创建用户',
     'UserGroupCreate': '创建用户组',
-    'UserUpdate': '更新用户'
+    'UserUpdate': '更新用户',
+    'AdminUserCreate': '创建管理用户',
+    'PlatformCreate': '创建系统平台',
+    'PlatformUpdate': '更新系统平台',
+    'CommandFilterCreate': '创建命令过滤器',
+    'CommandFilterUpdate': '更新命令过滤器'
   },
   // 用户模块翻译
   users: {

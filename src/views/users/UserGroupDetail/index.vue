@@ -1,68 +1,63 @@
 <template>
-  <GenericDetailPage :submenu="submenu" :active-menu="activeSubMenu" :title="title">
-    <template v-slot:info>
+  <GenericDetailPage :object.sync="group" v-bind="config">
+    <template #info>
       <div>
         <el-row :gutter="20">
-          <el-col :span="14">
+          <el-col :md="14" :sm="24">
             <DetailCard :title="cardTitle" :items="detailItems" />
           </el-col>
-          <el-col :span="10">
-            <el-card class="box-card primary">
-              <div slot="header" class="clearfix">
-                <i class="fa fa-user" />
-                <span>组下用户</span>
-              </div>
-              <div>
-                <Select2 v-model="select2.value" v-bind="select2" />
-              </div>
-            </el-card>
+          <el-col :md="10" :sm="24">
+            <RelationCard v-if="!relationConfig.loading" v-bind="relationConfig" />
           </el-col>
         </el-row>
       </div>
     </template>
-
   </GenericDetailPage>
 </template>
 
 <script>
-import { getUserGroupDetail, getUserGroupMembers } from '@/api/user'
+import { getUserGroupMembers } from '@/api/user'
 import { GenericDetailPage } from '@/layout/components'
-import DetailCard from '@/components/DetailCard'
-import Select2 from '@/components/Select2'
+import { DetailCard, RelationCard } from '@/components'
 
 export default {
   components: {
     GenericDetailPage,
     DetailCard,
-    Select2
+    RelationCard
   },
   data() {
     return {
-      activeSubMenu: 'info',
-      groupMembers: [],
-      group: { name: '' },
-      submenu: [
-        {
-          title: this.$tc('baseInfo'),
-          name: 'info'
-        },
-        {
-          title: this.$t('perms.Asset permissions'),
-          name: 'assetPermissions'
+      group: { name: '', comment: '' },
+      config: {
+        activeMenu: 'info',
+        submenu: [
+          {
+            title: this.$tc('Basic Info'),
+            name: 'info'
+          },
+          {
+            title: this.$t('perms.Asset permissions'),
+            name: 'assetPermissions'
+          }
+        ],
+        actions: {
+          canDelete: true,
+          canUpdate: true
         }
-      ],
-      cardTitle: '基本信息',
-      select2: {
+      },
+      groupMembers: [],
+      relationConfig: {
+        icon: 'fa-user',
+        title: this.$tc('Members'),
         url: '/api/v1/users/users/',
-        initial: this.groupMembers,
-        value: []
-      }
+        value: [],
+        loading: true
+      },
+      cardTitle: this.$tc('Basic Info')
     }
   },
   computed: {
-    title() {
-      return this.$t('users.userGroup') + ': ' + this.group.name
-    },
     detailItems() {
       return [
         {
@@ -85,19 +80,13 @@ export default {
     }
   },
   mounted() {
-    getUserGroupDetail(this.$route.params.id).then(data => {
-      this.group = data
-    })
-
     getUserGroupMembers(this.$route.params.id).then(data => {
-      this.groupMembers = data.map(v => {
-        const member = {}
-        member.id = v.user
-        member.name = v.user_display
-        return member
-      })
-      this.select2.initial = this.groupMembers
-      console.log(this.groupMembers)
+      for (const i of data) {
+        this.relationConfig.value.push(i.user)
+      }
+      console.log(this.relationConfig.value)
+    }).finally(() => {
+      this.relationConfig.loading = false
     })
   },
   methods: {
